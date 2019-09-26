@@ -22,9 +22,30 @@ class Weapon(Ability):
             return random.randint(self.attack_strength//2, self.attack_strength)
 
 class Team():
-    def __init__(self, team_name,):
-        self.team_name = team_name
-        
+    def __init__(self, name):
+        self.name = name
+        self.heroes = list()
+
+    def remove_hero(self, name):
+        for hero in self.heroes:
+            if hero.name == name:
+                print(f"You removed {name} hero")
+                print(hero.name, name)
+                self.heroes.remove(hero)
+        print("The hero isn't in here")
+        return 0
+
+    def view_all_heroes(self):
+        print("Your Heroes are\n")
+        if len(self.heroes) == 0:
+            print("There isn't any heros in this team. Add some heroes")
+        else: 
+            for hero in self.heroes:
+                print(hero.name)
+
+    def add_hero(self, hero):
+        self.heroes.append(hero)
+        print(f"You added {hero} to your team")
 
 class Hero():
     def __init__(self,name,starting_health=100):
