@@ -1,4 +1,5 @@
 import random
+import copy
 
 class Ability():
     def __init__(self, name, attack_strength):
@@ -25,6 +26,50 @@ class Team():
     def __init__(self, name):
         self.name = name
         self.heroes = list()
+
+    def attack(self, other_team):
+
+        #Copies of both teams
+        copy_team_list = copy.copy(self.heroes)
+        copy_other_team_list = copy.copy(other_team)
+
+        #Random Hero indexes
+        team_index = random.randint(0, len(self.heroes)-1)
+        other_team_index = random.randint(0, len(self.heroes)-1)
+
+        #two random Heros
+        random_hero = self.heroes[team_index]
+        other_random_hero = other_team[other_team_index]
+        
+        #while loop to find a winner or tag.
+        bothAlive = True
+        while bothAlive:
+            #This is a 
+            if len(copy_other_team_list) == 0 or len(copy_team_list) == 0:
+                bothAlive = False
+                if len(copy_other_team_list) == 0 and len(copy_team_list) == 0:
+                    print("This is a draw!")
+            else:
+                random_hero.fight(other_random_hero)
+
+                if random_hero.is_alive() == False:
+                    copy_team_list.remove(random_hero)
+                if other_random_hero.is_alive() == False:
+                    copy_other_team_list.remove(other_random_hero)
+            
+        if len(copy_other_team_list) == 0 or len(copy_team_list) != 0:
+            print("Other Team, Wins!")
+        if len(copy_other_team_list) != 0 or len(copy_team_list) == 0:
+            print("Team Wins!")
+
+    def revive_heroes(self, health=100):
+        for hero in self.heroes:
+            hero.current_health = health
+        print("health restored")
+
+    def stats(self):
+        for hero in self.heroes:
+            print(f"{hero.name}: {hero.kills // hero.deaths}")
 
     def remove_hero(self, name):
         for hero in self.heroes:
@@ -54,7 +99,17 @@ class Hero():
         self.name = name
         self.starting_health = starting_health
         self.current_health = starting_health
-        pass
+        self.deaths = 0
+        self.kills = 0
+
+    def add_kill(self, num_kills):
+        # TODO: This method should add the number of kills to self.kills
+        self.kills += 1
+
+    def add_death(self, num_deaths):
+        # TODO: This method should add the number of deaths to self.deaths
+        self.deaths -= 1 
+
     def add_ability(self, ability):
         self.abilities.append(ability)
 
@@ -89,6 +144,8 @@ class Hero():
             for ability in opponent.abilities:
                 self.current_health -= ability.attack_strength
             if self.is_alive() == False:
+                print(f"kills: {self.kills}")
+                self.deaths += 1
                 print(f"{self.name} won")
             else:
                 print("The battle rages on")
