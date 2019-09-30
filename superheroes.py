@@ -22,6 +22,48 @@ class Weapon(Ability):
         else:
             return random.randint(self.attack_strength//2, self.attack_strength)
 
+class Arena:
+    def __init__(self, team_one, team_two):
+        self.team_one = team_one
+        self.team_two = team_two
+    
+    def create_ability(self):
+        name_input = input("Please type in the name of the ability")
+        attack_strength_input = input("Please input the attack strength of the ability")
+
+        return Ability(name_input, int(attack_strength_input))
+    
+    def create_weapon(self):
+        name_input = input("Please type in the name of the weapon you would like to add")
+        attack_strength_input = input("Please type in the attack potential attack strength")
+
+        return Weapon(name_input, int(attack_strength_input))
+
+    def create_armor(self):
+        name_input = input("Please type in the name of the weapon you would like to add")
+        max_block_input = input("Please input Max Potential Block for your armor")
+
+        return Armor(name_input, int(max_block_input))
+    
+    def create_hero(self):
+        '''Prompt user for Hero information
+          return Hero with values from user input.
+        '''
+        # TODO: This method should allow a user to create a hero.
+        # User should be able to specify if they want armors, weapons, and
+        # abilities.
+        # Call the methods you made above and use the return values to build
+        # your hero.
+        #
+        # return the new hero object
+        name_input = input("Please type in the name of the Hero you wish to create")
+        self.create_ability()
+        self.create_weapon()
+        self.create_armor()
+
+        return Hero(name_input)
+
+
 
 class Team:
     def __init__(self, name):
@@ -96,12 +138,12 @@ class Team:
         print(f"You added {hero} to your team")
 
 class Hero():
-    def __init__(self,name,starting_health=100):
+    def __init__(self, name, starting_health=100):
         self.abilities = list()
         self.armors = list()
         self.name = name
         self.starting_health = starting_health
-        self.current_health = starting_health
+        self.current_health = self.starting_health
         self.deaths = 0
         self.kills = 0
 
