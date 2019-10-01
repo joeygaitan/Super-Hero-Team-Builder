@@ -110,7 +110,7 @@ class Team():
         if len(other_team.heroes) == 0 or len(self.heroes) == 0:
             if len(other_team.heroes) == 0:
                 return "There isn't any heroes in the opposing team"
-            elif self.heroes == 0:
+            elif len(self.heroes) == 0:
                 return "There isn't any heroes in the team"
         #Copies of both teams
         copy_team_list = copy.copy(self.heroes)
@@ -256,6 +256,15 @@ class Arena(Team):
         # for that battle functionality.
         self.team_one.attack(self.team_two)
 
+    def again(self):
+        chose_team = input(input("please pick 1 for team one or 2 for team 2, or 3 for both: "))
+        if chose_team == 1:
+            self.build_team_one()
+        elif chose_team == 2:
+            self.build_team_two()
+        elif chose_team == 3:
+            self.build_team_one()
+            self.build_team_two()
     def show_stats(self):
             '''Prints team statistics to terminal.'''
             # TODO: This method should print out battle statistics
@@ -282,7 +291,7 @@ class Arena(Team):
             if team_one_kill_sum["count"] == 0:
                 team_one_kill_sum["count"] = 1
             if team_one_death_sum["count"] == 0:
-                team_one_death_sum["count"] = 0
+                team_one_death_sum["count"] = 1
 
             average_one_kills = team_one_kill_sum["kills"] // team_one_kill_sum["count"]
             average_one_deaths = team_one_death_sum["deaths"] // team_one_death_sum["count"]
@@ -304,7 +313,7 @@ class Arena(Team):
                 team_two_kill_sum["count"] = 1
 
             if team_two_death_sum["count"] == 0:
-                team_one_death_sum = 1
+                team_two_death_sum["count"] = 1
 
             average_two_kills = team_two_kill_sum["kills"] // team_two_kill_sum["count"]
             average_two_deaths = team_two_death_sum["deaths"] // team_two_death_sum["count"]
@@ -334,13 +343,14 @@ if __name__ == "__main__":
 
         arena.team_battle()
         arena.show_stats()
-        
+
         play_again = input("Play Again? Y or N: ")
 
         if play_again.lower() == "y":
         #Revive heroes to play again
             arena.team_one.revive_heroes()
             arena.team_two.revive_heroes()
+            arena.again()
         #Check for Player Input
         elif play_again.lower() == "n":
             game_is_running = False
